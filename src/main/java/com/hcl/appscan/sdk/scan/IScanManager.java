@@ -7,7 +7,10 @@
 package com.hcl.appscan.sdk.scan;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+
+import org.apache.wink.json4j.JSONException;
 
 import com.hcl.appscan.sdk.error.AppScanException;
 import com.hcl.appscan.sdk.logging.IProgress;
@@ -42,4 +45,6 @@ public interface IScanManager {
 	 * @throws AppScanException if there are no results available.
 	 */
 	void getScanResults(File destination, String format) throws AppScanException;
+	
+	void updateIssue(String issueId, String param,String value) throws IOException, JSONException;
 }

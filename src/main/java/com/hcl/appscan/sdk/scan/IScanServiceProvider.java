@@ -74,4 +74,6 @@ public interface IScanServiceProvider {
 	 * @param progress The {@link IProgress}.
 	 */
 	public void setProgress(IProgress progress);
+	
+	public void updateIssue(String issueId, String param, String value) throws IOException, JSONException;
 }

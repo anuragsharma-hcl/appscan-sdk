@@ -14,6 +14,8 @@ import java.util.Map;
 
 import javax.xml.transform.TransformerException;
 
+import org.apache.wink.json4j.JSONException;
+
 import com.hcl.appscan.sdk.CoreConstants;
 import com.hcl.appscan.sdk.Messages;
 import com.hcl.appscan.sdk.error.AppScanException;
@@ -72,6 +74,11 @@ public class SASTScanManager implements IScanManager{
 			m_scan.getResultsProvider().getResultsFile(destination, format);
 		else
 			throw new AppScanException(Messages.getMessage("message.results.unavailable")); //$NON-NLS-1$
+	}
+	
+	public void updateIssue(String issueId, String param,String value) throws IOException, JSONException {
+		IScanServiceProvider provider = m_scan.getServiceProvider();
+		provider.updateIssue(issueId,param, value);
 	}
 	
 	private  void run(IProgress progress,Map<String, String> properties, IScanServiceProvider provider) throws AppScanException {

@@ -153,6 +153,46 @@ public class CloudScanServiceProvider implements IScanServiceProvider, Serializa
 		
 		return null;
 	}
+     
+    @Override    
+    public void updateIssue(String issueId,String param, String value) throws IOException, JSONException {
+    	if(loginExpired())
+			return ;
+		
+    	Map<String, String> request_headers = m_authProvider.getAuthorizationHeader(true);
+    	request_headers.put("Content-Type", "application/json; charset=UTF-8");
+        request_headers.put("Accept", "application/json");
+    	HttpClient client = new HttpClient();
+    	String request_url="";
+    	JSONObject payLoad=new JSONObject();
+    	payLoad.put(param, value);
+    	HttpResponse response =null;
+    	if (param.equalsIgnoreCase("Status")) {
+    		request_url = m_authProvider.getServer() + String.format(API_ISSUES_ID, issueId);
+    		response=client.put(request_url, request_headers, payLoad.toString());
+    	}
+    	else if (param.equalsIgnoreCase("Comment")) {
+    		request_url = m_authProvider.getServer() + String.format(API_ISSUES_COMMENTS, issueId);
+    		response=client.post(request_url, request_headers, payLoad.toString());
+    	}
+    	
+		if (response.getResponseCode() == HttpsURLConnection.HTTP_OK || response.getResponseCode() == HttpsURLConnection.HTTP_CREATED ||response.getResponseCode() == HttpsURLConnection.HTTP_ACCEPTED || response.getResponseCode() == HttpsURLConnection.HTTP_NO_CONTENT)
+			return ;
+
+		if (response.getResponseCode() == HttpsURLConnection.HTTP_BAD_REQUEST)
+			m_progress.setStatus(new Message(Message.ERROR, Messages.getMessage(ERROR_INVALID_JOB_ID, issueId)));
+                else {
+                        JSONObject obj=(JSONObject)response.getResponseBodyAsJSON();
+                        if (obj!=null && obj.has(MESSAGE)){
+                            m_progress.setStatus(new Message(Message.ERROR, Messages.getMessage(obj.getString(MESSAGE))));
+                        }
+                        else {
+                            m_progress.setStatus(new Message(Message.ERROR, Messages.getMessage(ERROR_GETTING_RESULT, response.getResponseCode())));
+                        }
+                        
+                }
+
+    }
 	
 	@Override
 	public IAuthenticationProvider getAuthenticationProvider() {

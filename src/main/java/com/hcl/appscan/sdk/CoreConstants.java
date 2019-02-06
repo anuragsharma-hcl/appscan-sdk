@@ -57,6 +57,8 @@ public interface CoreConstants {
 	String API_SCANNER					= API_ENV + "/Scans/%s";								//$NON-NLS-1$
 	String API_SCANS					= API_ENV + "/Scans";									//$NON-NLS-1$
 	String API_NONCOMPLIANT_ISSUES 		= API_ENV + "/Scans/%s/NonCompliantIssues";				//$NON-NLS-1$
+	String API_ISSUES_ID				= API_ENV + "/Issues/%s";								//$NON-NLS-1$
+	String API_ISSUES_COMMENTS			= API_ENV + "/Issues/%s/Comments";						//$NON-NLS-1$
 	String API_SCANS_REPORT				= API_ENV + "/Scans/%s/Report/%s";						//$NON-NLS-1$
 	String API_SCX						= "SCX";                                                               //$NON-NLS-1$
         String API_REPORT_SELECTED_ISSUES       = API_ENV + "/Reports/Security/%s/%s";					//$NON-NLS-1$
